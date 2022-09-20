@@ -49,10 +49,16 @@ import {
 	DEFAULT_RETURN_FORMAT,
 	format,
 	waitWithTimeout,
+	toChecksumAddress,
 } from 'web3-utils';
 import { isBlockTag, isBytes, isNullish, isString } from 'web3-validator';
 import { TransactionError, TransactionRevertError } from 'web3-errors';
 import { ethRpcMethods } from 'web3-rpc-methods';
+import {
+	formatTransaction,
+	getTransactionGasPricing,
+	getTransactionFromAttr,
+} from 'web3-eth-transaction-utils';
 
 import { SignatureError, TransactionSendTimeoutError } from './errors';
 import {
@@ -69,11 +75,6 @@ import {
 	SendTransactionEvents,
 	SendTransactionOptions,
 } from './types';
-// eslint-disable-next-line import/no-cycle
-import { getTransactionFromAttr } from './utils/transaction_builder';
-import { formatTransaction } from './utils/format_transaction';
-// eslint-disable-next-line import/no-cycle
-import { getTransactionGasPricing } from './utils/get_transaction_gas_pricing';
 // eslint-disable-next-line import/no-cycle
 import { waitForTransactionReceipt } from './utils/wait_for_transaction_receipt';
 import { watchTransactionForConfirmations } from './utils/watch_transaction_for_confirmations';
@@ -183,6 +184,19 @@ export async function getGasPrice<ReturnFormat extends DataFormat>(
 	const response = await ethRpcMethods.getGasPrice(web3Context.requestManager);
 
 	return format({ eth: 'uint' }, response as Numbers, returnFormat);
+}
+
+/**
+ * @returns A list of accounts the node controls (addresses are checksummed).
+ *
+ * ```ts
+ * web3.eth.getAccounts().then(console.log);
+ * > ["0x11f4d0A3c12e86B4b5F39B213F7E19D048276DAe", "0xDCc6960376d6C6dEa93647383FfB245CfCed97Cf"]
+ * ```
+ */
+export async function getAccounts(web3Context: Web3Context<EthExecutionAPI>) {
+	const response = await ethRpcMethods.getAccounts(web3Context.requestManager);
+	return response.map(address => toChecksumAddress(address));
 }
 
 /**
