@@ -34,3 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - I've improved the security in XY (#1000)
 
 -->
+
+## [Unreleased]
+
+### Changed
+
+-   `privateKey` argument for `TransactionBuilder` type was changed from `HexString | Buffer` to `{ privateKey: HexString | Buffer; privateKeyToAddress: privateKeyToAddress }` (#5458)
+-   Return type for `TransactionBuilder` type was changed from `Promise<ReturnType>` (with `ReturnType` being a generic) to `Promise<Transaction>` (`Transaction` from `web3-types`) (#5458)
