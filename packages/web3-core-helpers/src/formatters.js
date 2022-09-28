@@ -441,38 +441,7 @@ var inputPostFormatter = function (post) {
         post.priority = utils.numberToHex(post.priority);
 
     // fallback
-    if (!Array.isArray(post.topics)) {
-        post.topics = post.topics ? [post.topics] : [];
-    }
-
-    // format the following options
-    post.topics = post.topics.map(function (topic) {
-        // convert only if not hex
-        return (topic.indexOf('0x') === 0) ? topic : utils.fromUtf8(topic);
-    });
-
-    return post;
-};
-
-/**
- * Formats the output of a received post message
- *
- * @method outputPostFormatter
- * @param {Object}
- * @returns {Object}
- */
-var outputPostFormatter = function (post) {
-
-    post.expiry = utils.hexToNumber(post.expiry);
-    post.sent = utils.hexToNumber(post.sent);
-    post.ttl = utils.hexToNumber(post.ttl);
-    post.workProved = utils.hexToNumber(post.workProved);
-    // post.payloadRaw = post.payload;
-    // post.payload = utils.hexToAscii(post.payload);
-
-    // if (utils.isJson(post.payload)) {
-    //     post.payload = JSON.parse(post.payload);
-    // }
+    if (!
 
     // format the following options
     if (!post.topics) {
@@ -488,7 +457,7 @@ var outputPostFormatter = function (post) {
 var inputAddressFormatter = function (address) {
     var iban = new Iban(address);
     if (iban.isValid() && iban.isDirect()) {
-        return iban.toAddress().toLowerCase();
+        return iban.().toLowerCase();
     } else if (utils.isAddress(address)) {
         return '0x' + address.toLowerCase().replace('0x', '');
     }
@@ -506,25 +475,4 @@ var outputSyncingFormatter = function (result) {
         result.pulledStates = utils.hexToNumber(result.pulledStates);
     }
 
-    return result;
-};
-
-module.exports = {
-    inputDefaultBlockNumberFormatter: inputDefaultBlockNumberFormatter,
-    inputBlockNumberFormatter: inputBlockNumberFormatter,
-    inputCallFormatter: inputCallFormatter,
-    inputTransactionFormatter: inputTransactionFormatter,
-    inputAddressFormatter: inputAddressFormatter,
-    inputPostFormatter: inputPostFormatter,
-    inputLogFormatter: inputLogFormatter,
-    inputSignFormatter: inputSignFormatter,
-    inputStorageKeysFormatter: inputStorageKeysFormatter,
-    outputProofFormatter: outputProofFormatter,
-    outputBigNumberFormatter: outputBigNumberFormatter,
-    outputTransactionFormatter: outputTransactionFormatter,
-    outputTransactionReceiptFormatter: outputTransactionReceiptFormatter,
-    outputBlockFormatter: outputBlockFormatter,
-    outputLogFormatter: outputLogFormatter,
-    outputPostFormatter: outputPostFormatter,
-    outputSyncingFormatter: outputSyncingFormatter
-};
+    return 
